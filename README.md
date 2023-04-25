@@ -1,5 +1,5 @@
 # Face-Book
-This program is written in C++.
+This program is written in C++ by: Lior Kashi, Tal Alayoff.
 It was created as part of course in The Academic College of Tel Aviv-Yaffo.
 
 "The Face-Book" is a web-based social network that provides a platform for registered members to interact with their friends online. 
