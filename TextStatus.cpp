@@ -5,15 +5,15 @@ using namespace std;
 void TextStatus::printColorAndProgram()
 {
 	cout << textData;
-	cout << "\nThis status is printed in black and white in simple program." << endl;
+	cout << " (This status is printed in black and white in simple program.)" << endl;
 }
 
-TextStatus::TextStatus(Date statusDate, Time statusTime, std::string status) 
-	: Status(statusDate, statusTime, status)
+TextStatus::TextStatus(Date statusDate, Time statusTime, std::string status, Friend* author)
+	: Status(statusDate, statusTime, status, author)
 {
 }
 
 TextStatus::~TextStatus()
 {
-	//delete this;
+
 }

@@ -1,11 +1,12 @@
 using namespace std;
 #include "Status.h"
 
-Status::Status(Date date, Time time, const string& textData)
+Status::Status(Date date, Time time, const std::string& textData, Friend* author)
 {
 	setStatus(textData);
 	this->date = date;
 	this->time = time;
+	this->author = author;
 }
 
 void Status::setStatus(const string& status)
@@ -16,7 +17,29 @@ void Status::setStatus(const string& status)
 const void Status::getStatus()
 {
 	printColorAndProgram();
-	//return textData;
+}
+
+void Status::PrintStatus()
+{
+
+	cout << "\n  ________________________" << endl;
+	cout << " /                        \\" << endl;
+	cout << "|           Date:          |	";
+	date.printDate();
+	cout << " \\________________________/" << endl << "	";
+
+	cout << "\n  ________________________" << endl;
+	cout << " /                        \\" << endl;
+	cout << "|           Time:          |	";
+	time.printTime();
+	cout << "\n \\________________________/" << endl << "	";
+
+	cout << "\n  ________________________" << endl;
+	cout << " /                        \\" << endl;
+	cout << "|        Status data:      |	" << this->getStatusData();
+	
+	cout << "\n \\________________________/" << endl << "---------------------------------------------------------------------------------------------";
+
 }
 
 Date Status::getStatusDate()
@@ -48,6 +71,11 @@ bool Status::operator!=(Status* statusToCompare)
 		return true;
 	}
 	return false;
+}
+
+Friend* Status::getAuthor()
+{
+	return author;
 }
 
 Status::~Status()

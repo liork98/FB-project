@@ -10,6 +10,8 @@
 #include <string>
 #include <fstream>
 class Page;
+class Status;
+
 class Friend
 {
 private:
@@ -17,7 +19,7 @@ private:
 	Date birth;
 	std::vector<Status*> statusesArr; 
 	std::vector<Friend*> friendsArr;
-	std::vector<Page*>pagesArr;
+	std::vector<Page*> pagesArr;
 
 public:
 	// C'tor
@@ -29,7 +31,7 @@ public:
 	//Returns true if page is already linked
 	bool isFriendIsAFan(Page* page_, int* index); 
 	void addNewStatus(Status* status);
-	void printStatuses(int type) noexcept(false);
+	void printStatuses(int type, std::vector<Status*> statusesArr_) noexcept(false);
 	void addAFriendTo(Friend* friend_)noexcept(false);
 	void addPageToArr(Page* page_);
 	void removeFriendFrom(Friend* friend_) noexcept(false);
@@ -48,7 +50,7 @@ public:
 	int getNumberOfpages();
 	int getNumberOfstatuses();
 	void writeFriendToFile(std::ofstream& inFile);
-
+	bool areFriends(Friend* friend_);
 	Friend& operator+=(Friend& friendToAdd)
 	{
 		addAFriendTo(&friendToAdd);

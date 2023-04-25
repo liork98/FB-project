@@ -4,7 +4,6 @@ using namespace std;
 #define INVALID_INDEX -1
 
 
-// c'tor
 Page::Page(const string name_)
 {
 	setName(name_);
@@ -14,14 +13,17 @@ void Page::setName(const string& name1)
 {
 	name = name1;
 }
+
 string Page::getName()
 {
 	return name;
 }
+
 void Page::addNewStatus(Status* status)
 {
 	statusArr.push_back(status);
 }
+
 void Page::printStatuses()
 {
 	vector<Status*>::iterator itr = statusArr.begin();
@@ -34,6 +36,7 @@ void Page::printStatuses()
 		i++;
 	}
 }
+
 void Page::printAllFriends()
 {
 	cout << "Fans:\n" << endl;
@@ -46,6 +49,7 @@ void Page::printAllFriends()
 		count++;
 	}
 }
+
 void Page::addFanToPage(Friend* friend_) noexcept(false)
 {
 	int index = INVALID_INDEX;
@@ -55,6 +59,7 @@ void Page::addFanToPage(Friend* friend_) noexcept(false)
 	}
 	fansArr.push_back(friend_);
 }
+
 void Page::removeFanFromPage(Friend* friend_)
 {
 	int index;
@@ -64,6 +69,7 @@ void Page::removeFanFromPage(Friend* friend_)
 	}
 
 }
+
 bool Page::isFriendIsAFan(Friend* friend_, int* index)
 {
 	vector<Friend*>::iterator itr = fansArr.begin();

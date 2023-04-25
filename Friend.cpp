@@ -3,7 +3,7 @@
 using namespace std;
 #define ZERO 0
 #define INVALID_INDEX -1
-#define METHOD_7 7
+#define SHOW_LAST_STATUSES_METHOD 7
 #define TEN 10
 
 Friend::Friend(const string name, Date& birth_)
@@ -63,65 +63,87 @@ void Friend::addNewStatus(Status* status)
 	statusesArr.push_back(status);
 }
 
-void Friend::printStatuses(int type) noexcept(false)
+bool Friend::areFriends(Friend* friend_)
+{
+	vector<Friend*>::iterator frienditr1 = friendsArr.begin();
+	vector<Friend*>::iterator frienditrEnd1 = friendsArr.end();
+
+	for (; frienditr1 != frienditrEnd1; ++frienditr1)
+	{
+		if (*frienditr1 == friend_)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void Friend::printStatuses(int type, vector<Status*> statusesArr_) noexcept(false)
 {
 	
 	int size = statusesArr.size();
 
 	// If size is 0
-	if (size == ZERO && type!=METHOD_7)
+	if (size == ZERO && type!=SHOW_LAST_STATUSES_METHOD)
 	{
-		throw "Error: There are no statuses to print!";
+		throw " ___________\n/           \\ \n|   ERROR   |\n\\___________/\n There are no statuses to print!";
 	}
 
 	else // size != 0
 	{
-		
-		vector<Friend*> ::iterator frienditr = friendsArr.begin();
-		vector<Friend*> ::iterator frienditrEnd = friendsArr.end();
-		vector<Status*> ::iterator statusitr = statusesArr.begin();
-		vector<Status*> ::iterator statusitrEnd = statusesArr.end();
 
 		int count = ZERO;
 		
-		if (type == METHOD_7)
+		if (type == SHOW_LAST_STATUSES_METHOD)
 		{
-			size = getMin((*frienditr)->statusesArr.size(), TEN);
-			for (; frienditrEnd != frienditr && size != 0; ++frienditrEnd) // Running per a friend
-			{
-				cout << "Statuses of: " << (*frienditr)->getName() << endl;
-				statusitr = (*frienditr)->statusesArr.begin();
-				statusitrEnd =  (*frienditr)->statusesArr.end();
+			vector<Status*> ::iterator statusitr = statusesArr_.begin();
+			vector<Status*> ::iterator statusitrEnd = statusesArr_.end();
+
+			size = getMin(statusesArr_.size(), TEN);
+				
 				if (size == ZERO)
 				{
-					cout << "Error: There are no statuses to print!";
+					cout << " ___________\n/           \\ \n|   ERROR   |\n\\___________/\n There are no statuses to print!";
 				}
-				for (; statusitrEnd != statusitr && size != ZERO; --statusitrEnd) // Running per a status
+				for (; statusitrEnd != statusitr; ++statusitr) // Running per a status
 				{
-					cout << "Status number " << count + 1 << ":\n Date: ";
-					(**(statusitrEnd-1)).getStatusDate().printDate();
-					(**(statusitrEnd - 1)).getStatusTime().printTime();
-					cout << "The status data: " << endl;
-					(**(statusitrEnd - 1)).getStatus();
-					count++;
-					size--;
+					if (areFriends((*statusitr)->getAuthor()))
+					{
+						cout << "\n  ________________________" << endl;
+						cout << " /                        \\" << endl;
+						cout << "|        Statuses of :     |	" << (*statusitr)->getAuthor()->getName() << endl;
+						cout << " \\________________________/" << endl << "		";
+
+						cout << "\n  ________________________" << endl;
+							cout << " /                        \\" << endl;
+							cout << "|       Status number:     |	" << ++count << endl;
+							cout << " \\________________________/" << endl << "		";
+
+							(*statusitr)->PrintStatus();
+
+							
+					}
+					
 				}
-				size = getMin((*frienditr)->statusesArr.size(), TEN);
+				size--;
+				//size = getMin((*frienditr)->statusesArr.size(), TEN);
 				count = ZERO;
-			}
+			//}
 		}
 	
 		else // type ==5
 		{
+			vector<Status*> ::iterator statusitr = statusesArr.begin();
+			vector<Status*> ::iterator statusitrEnd = statusesArr.end();
 			for (; statusitr != statusitrEnd; ++statusitr)
 			{
-				cout << "Status number " << count + 1 << "\nDate: ";
-				(**statusitr).getStatusDate().printDate();
-				cout << "Time: ";
-				(**statusitr).getStatusTime().printTime();
-				cout << "\nThe status data: " <<endl << endl;
-				(**statusitr).getStatus();
-				//cout << "\n";
+				cout << "\n  ________________________" << endl;
+				cout << " /                        \\" << endl;
+				cout << "|       Status number:     |	" << count + 1 <<endl;
+				cout << " \\________________________/" << endl << "		";
+
+				(*statusitr)->PrintStatus();
+
 				count++;
 			}
 		}
@@ -154,7 +176,7 @@ void Friend::removeFriendFrom(Friend* friend_) noexcept(false) //Unlink between 
 	}
 	else
 	{
-		throw "Error: The friends are already unlinked.";
+		throw " ___________\n/           \\ \n|   ERROR   |\n\\___________/\n The friends are already unlinked.";
 	}
 	
 }
@@ -169,7 +191,7 @@ void Friend::removePageFrom(Page* page_) noexcept(false) //unlink between friend
 	}
 	else
 	{
-		throw "Error: This friend is not a fan of this page.";
+		throw "  ___________\n/           \\ \n|   ERROR   |\n\\___________/\nThis friend is not a fan of this page.";
 	}
 }
 

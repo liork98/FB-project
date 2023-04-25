@@ -5,17 +5,24 @@
 #include "Date.h"
 #include <string>
 #include "Time.h"
+#include "Friend.h"
+
+class Friend;
 
 class Status
 {
 private:
 	Date date;
 	Time time;
+	Friend* author = nullptr;
+
 protected:
 	std::string textData;
+
 public:
+	Friend* getAuthor();
 	enum class mediaType { Text, Picture, Video };
-	Status(Date date,  Time time, const std::string& textData);
+	Status(Date date,  Time time, const std::string& textData, Friend* author);
 	const void getStatus();
 	Date getStatusDate();
 	void setStatus(const std::string& status);
@@ -25,7 +32,8 @@ public:
 	std::string getStatusData();
 	Time getStatusTime();
 	virtual ~Status();
-	//virtual std::string getStatusData()= 0;
+	void PrintStatus();
+	
 };
 
 #endif // !_STATUS_H

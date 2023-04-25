@@ -1,9 +1,8 @@
 #include "PhotoStatus.h"
 using namespace std;
 #include <iostream>
-
-PhotoStatus::PhotoStatus(Date statusDate, Time statusTime, std::string status)
-	: Status(statusDate, statusTime, status)
+PhotoStatus::PhotoStatus(Date statusDate, Time statusTime, std::string status, Friend* author)
+	: Status(statusDate, statusTime, status, author)
 {
 
 }
@@ -11,7 +10,7 @@ PhotoStatus::PhotoStatus(Date statusDate, Time statusTime, std::string status)
 void PhotoStatus::printColorAndProgram()
 {
 	cout << this->textData;
-	cout << "\nThis status is printed colourful using simple program." << endl;
+	cout << " (This status is printed colourful using simple program.)" << endl;
 }
 PhotoStatus::~PhotoStatus()
 {

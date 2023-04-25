@@ -3,13 +3,44 @@ using namespace std;
 #define MIN 3
 #define ZERO 0
 #define INVALID_INDEX -1
-#define METHOD_7 7
+#define SHOW_LAST_STATUSES_METHOD 7
 #include <string>
 #include <iostream>
 #include "TextStatus.h"
 #include "PhotoStatus.h"
 #include "VideoStatus.h"
 #include <fstream>
+
+std::vector<Friend*> Admin::getFriendsArr()
+{
+	return friendsArr;
+}
+
+void Admin::PrintRecentStatuses(Friend& friend_)
+{
+
+	int count = 0;
+	vector<Status*>::iterator statusitr = statusesArr.begin();
+	vector<Status*>::iterator statusitrEnd = statusesArr.end();
+	Friend* currentFriend;
+	for (; statusitr != statusitrEnd; ++statusitr) // Run per status
+	{
+		
+		currentFriend = (*statusitr)->getAuthor();
+		if (currentFriend->areFriends(&friend_)) // The current status's author is a friend 
+		{
+			cout << "\n  ________________________" << endl;
+			cout << " /                        \\" << endl;
+			cout << "|       Status number:     |	" << ++count << endl;
+			cout << " \\________________________/" << endl << "		";
+
+			(*statusitr)->PrintStatus();
+		}
+	}
+}
+
+
+
 
 bool Admin::isExist(const string& name, int typeArr, int* indexResult) 
 {
@@ -123,7 +154,6 @@ bool Admin::addAStatus(int typeArr)
 		Date statusDate = createDate();
 		Time statusTime = createTime();
 		createAStatus(typeStatus, statusDate, statusTime, status, typeArr, indexResult);
-		//Status newStatus(statusDate, statusTime, status);
 		
 		res = true;
 
@@ -133,29 +163,29 @@ bool Admin::addAStatus(int typeArr)
 
 void Admin::createAStatus(int typeStatus, Date& statusDate, Time& statusTime, string& status, int typeArr, int indexResult)
 {
+	Status* newStatus;
 	switch (typeStatus)
 	{
 	case(ONE):
 	{
-		// shapes[i] = new Square(framWidth, color, sideLength); 
-
-		Status* newStatus = new TextStatus(statusDate, statusTime, status);
+		Status* newStatus = new TextStatus(statusDate, statusTime, status, friendsArr[indexResult]);
 		addStatusToArr(typeArr, indexResult, newStatus);
 		break;
 	}
 	case(2):
 	{
-		Status* newStatus = new PhotoStatus(statusDate, statusTime, status);
+		Status* newStatus = new PhotoStatus(statusDate, statusTime, status, friendsArr[indexResult]);
 		addStatusToArr(typeArr, indexResult, newStatus);
 		break;
 	}
 	case(3):
 	{
-		Status* newStatus = new VideoStatus(statusDate, statusTime, status);
+		Status* newStatus = new VideoStatus(statusDate, statusTime, status, friendsArr[indexResult]);
 		addStatusToArr(typeArr, indexResult, newStatus);
 		break;
 	}
 	}
+	//statusesArr.push_back(newStatus);
 }
 
 void Admin::addStatusToArr(int typeArr, int index, Status* status)
@@ -164,6 +194,7 @@ void Admin::addStatusToArr(int typeArr, int index, Status* status)
 	{
 		vector<Friend*>::iterator itr1 = friendsArr.begin();
 		(*(itr1 + index))->addNewStatus(status);
+		statusesArr.push_back(status);
 	}
 	else 
 	{
@@ -224,11 +255,17 @@ void Admin::printPagesArr()
 	}
 }
 
-void Admin::printAllStatus(int typeArr, int typeMethod, const string& name_2) 
+vector<Status*> Admin::getStatusesArr()
+{
+	return statusesArr;
+}
+
+void Admin::printAllStatus(int typeArr, int typeMethod, const string& name_2, Admin* admin) 
 {
 	int indexResult;
 	string name;
-	if (typeMethod != METHOD_7)
+	std::vector<Status*> statusesArr = admin->getStatusesArr();
+	if (typeMethod != SHOW_LAST_STATUSES_METHOD)
 	{
 		if (typeArr == TYPE_FRIEND) //Friends
 		{
@@ -250,7 +287,7 @@ void Admin::printAllStatus(int typeArr, int typeMethod, const string& name_2)
 			if (typeArr == TYPE_FRIEND)
 			{
 				vector<Friend*>::iterator itr = friendsArr.begin();
-				(*(itr + indexResult))->printStatuses(typeMethod);
+				(*(itr + indexResult))->printStatuses(typeMethod, statusesArr);
 			}
 			else
 			{
@@ -266,7 +303,7 @@ void Admin::printAllStatus(int typeArr, int typeMethod, const string& name_2)
 		if (typeArr == TYPE_FRIEND)
 		{
 			vector<Friend*>::iterator itr = friendsArr.begin();
-			(*(itr + indexResult))->printStatuses(typeMethod);
+			(*(itr + indexResult))->printStatuses(typeMethod, admin->getStatusesArr());
 		}
 		else
 		{
@@ -352,7 +389,7 @@ void Admin::writeToFile()
 	vector<Page*>::iterator pageitr = pagesArr.begin();
 	vector<Page*>::iterator pageitrEnd = pagesArr.end();
 	ofstream inFile;
-	inFile.open("Data.txt");
+	inFile.open("recent_run_data.txt");
 	int linksBTWfriends=0, linksBTWPages=0;
 
 	inFile << friendsArr.size() << "\n" << pagesArr.size() << "\n";
@@ -448,7 +485,7 @@ Date Admin::createDate()
 	int month;
 	int day;
 	
-	cin >> year >> month >> day;
+	cin >> day >> month >> year;
 	Date res(day, month, year);
 	return res;
 }

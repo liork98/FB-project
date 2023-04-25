@@ -6,7 +6,7 @@
 #include <vector>
 #include <fstream>
 
-
+class Status;
 class Friend;
 
 class Page
@@ -38,7 +38,7 @@ public:
 	}
 	void writeFriendToFile(std::ofstream& inFile);
 	int getNumberOfFans();
-	~Page(); //d'ctor
+	~Page();
 	
 };
 

@@ -14,8 +14,10 @@ class Admin
 private:
 	std::vector<Friend*> friendsArr;
 	std::vector<Page*> pagesArr;
-	//std::vector<Status*> statusArr;
+	std::vector<Status*> statusesArr;
 public:
+	std::vector<Friend*> getFriendsArr();
+	void PrintRecentStatuses(Friend& friend_);
 	void writeLinksBTWFriendsAndPagesTofile(std::ofstream& inFile);
 	void writeLinksBTWFriendsTofile(std::ofstream& inFile);
 	bool isExist(const std::string& name, int typeArr, int* indexResult);// checks if friend / page is exist
@@ -26,9 +28,10 @@ public:
 	void printPagesArr();
 	Date createDate();
 	Time createTime();
+	std::vector<Status*> getStatusesArr();
 	void addStatusToArr(int typeArr, int index, Status* status);//adding a status to friend/page
 	bool printFriendsOfFriends(const std::string& name_, int typeArr);// prints all friends of a friend
-	void printAllStatus(int typeArr, int typeMethod, const std::string& name_2);
+	void printAllStatus(int typeArr, int typeMethod, const std::string& name_2, Admin* admin);
 	bool LinkMembers(const std::string& name1, const std::string& name2, int type1, int type2); // link between friends/ page and friend
 	bool UnlinkMembers(const std::string& name1, const std::string& name2, int type1, int type2);// Cancels link between friends/ page and friend
 	void showAllPagesOfAFriend(const std::string& name1);
@@ -36,5 +39,6 @@ public:
 	void writeToFile();
 	void countLinks(int* linksFriends, int* linksPages);
 	void createAStatus(int typeStatus, Date& statusDate, Time& statusTime, std::string& status,int typeArr, int indexResult);
+	bool AreFriends(Friend& name1, Friend& name2);
 };
 #endif // _ADMIN_H
