@@ -1,7 +1,6 @@
-# Face-Book
-This program is written in C++ by: Lior Kashi, Tal Alayoff.
-
-It was created as part of course in The Academic College of Tel Aviv-Yaffo.
+<h1> Face-Book </h1>
+<h5> This program is written in C++ by: Lior Kashi, Tal Alayoff. <br></h5>
+<h5> It was created as part of course in The Academic College of Tel Aviv-Yaffo. <br></h5>
 
 "The Face-Book" is a web-based social network that provides a platform for registered members to interact with their friends online. 
 When a user signs up, they create a unique profile with their name and date of birth. This information is stored in a database.
@@ -15,3 +14,10 @@ Each fan page has a list of all the members who follow it. (a member's name and 
 
 For each member, the system displays the 10 most recent and updated statuses of their friends.
 The system also provides fan pages with their own notice board where they can post statuses.
+
+- _All project names is case-sensitive._
+- _In every disconnection (choosing the 'exit' option), the data is saved to a `recent_run_data.txt` file. The program will retrieve the information from this file for the next run._
+
+Enjoy (:
+
+![Screenshot1]()
