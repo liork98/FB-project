@@ -20,5 +20,6 @@ The system also provides fan pages with their own notice board where they can po
 
 Enjoy (:
 
-![pic1](https://user-images.githubusercontent.com/118155017/234386627-b0fc08cd-2144-4eee-b72d-ce6a5a3cab2e.jpg)
+![image](https://user-images.githubusercontent.com/118155017/234679121-5bd19e0d-81ad-4940-be2e-0afcee5469af.png)
+
 ![pic2](https://user-images.githubusercontent.com/118155017/234386636-0e03100b-9da1-4ef4-bd81-cfe9fa44709c.jpg)
