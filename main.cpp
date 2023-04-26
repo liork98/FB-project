@@ -20,6 +20,7 @@ void getFriendArr(bool* flag, ifstream& inFile, char delimeter1, char delimeter2
 void getPageArr(bool* flag, ifstream& inFile, char delimeter1, char delimeter2, int i, Admin& newAdmin);
 void linkMembers(Admin& newAdmin, ifstream& inFile, char delimeter1, char delimeter2);
 void showWelcome();
+void showTitle(int methodNumber);
 
 int main()
 {
@@ -28,54 +29,8 @@ int main()
 
 		ifstream inFile;
 		inFile.open("recent_run_data.txt");
-		if (!inFile)
-		{
-			// Creating local members.
-			Date date1(20, 5, 2000);
-			admin.createAFriend("Friend1", date1);
+		admin = readFile(inFile);
 
-			Date date2(1, 11, 1998);
-			admin.createAFriend("Friend2", date2);
-
-			Date date3(15, 2, 1997);
-			admin.createAFriend("Friend3", date3);
-
-			admin.createAPage("FanPage1");
-			admin.createAPage("FanPage2");
-			admin.createAPage("FanPage3");
-
-			// Every local member have two friends.
-			admin.LinkMembers("Friend1", "Friend2", TYPE_FRIEND, TYPE_FRIEND);
-			admin.LinkMembers("Friend1", "Friend3", TYPE_FRIEND, TYPE_FRIEND);
-			admin.LinkMembers("Friend3", "Friend2", TYPE_FRIEND, TYPE_FRIEND);
-
-			// Every local member have two statuses.
-			//Friend1
-			Date date11(1, 12, 2000);
-			Time time11(15, 26);
-			std::vector<Friend*> adminFriendsArr = admin.getFriendsArr();
-
-			Status* status1a = new TextStatus(date11, time11, "status text 1", adminFriendsArr[0]);
-			Status* status1b = new PhotoStatus(date11, time11, "status text 2", adminFriendsArr[0]);
-			//Friend2
-			Status* status1c = new TextStatus(date11, time11, "status text 1", adminFriendsArr[1]);
-			Status* status1d = new PhotoStatus(date11, time11, "status photo 2", adminFriendsArr[1]);
-			//Friend3
-			Status* status1e = new TextStatus(date11, time11, "status text 1", adminFriendsArr[2]);
-			Status* status1f = new VideoStatus(date11, time11, "status video 2", adminFriendsArr[2]);
-
-			admin.addStatusToArr(TYPE_FRIEND, 0, status1a);
-			admin.addStatusToArr(TYPE_FRIEND, 0, status1b);
-			admin.addStatusToArr(TYPE_FRIEND, 1, status1c);
-			admin.addStatusToArr(TYPE_FRIEND, 1, status1d);
-			admin.addStatusToArr(TYPE_FRIEND, 2, status1e);
-			admin.addStatusToArr(TYPE_FRIEND, 2, status1f);
-		}
-		else
-		{
-			admin = readFile(inFile);
-		}
-		
 		int choose = ZERO;
 		showWelcome();
 		while (choose != EXIT)
@@ -126,10 +81,9 @@ Admin readFile(ifstream& inFile)
 
 void linkMembers(Admin& newAdmin, ifstream& inFile, char delimeter1, char delimeter2)
 {
-	string name1, name2;
+	string name1, name2, ch;
 	int linksBTWfriends, linkBTWpages, k;
 	inFile >> linksBTWfriends >> linkBTWpages;
-	string ch;
 	bool flag = true;
 	for (k = 0; k < linksBTWfriends; k++)
 	{
@@ -151,8 +105,7 @@ void linkMembers(Admin& newAdmin, ifstream& inFile, char delimeter1, char delime
 void getPageArr(bool* flag,ifstream& inFile, char delimeter1, char delimeter2, int i, Admin& newAdmin)
 {
 	int numOfStatusesOfAPage, numOfFans;
-	string name,status;
-	string ch;
+	string name,status, ch;
 	int day, month, year, hourStatus, minStatus, statusType;
 	if(!(*flag))
 		getline(inFile, ch);
@@ -170,6 +123,7 @@ void getPageArr(bool* flag,ifstream& inFile, char delimeter1, char delimeter2, i
 		newAdmin.createAStatus(statusType, date2, time2, status, TYPE_PAGE, i);
 	}
 }
+
 void getFriendArr(bool* flag, ifstream& inFile ,char delimeter1, char delimeter2, int i, Admin& newAdmin)
 {
 	string name, status;
@@ -207,22 +161,22 @@ void showMenu(Admin& admin)
 	cout << "					 |_|  |_|  \\___| |_| |_|  \\__,_| (_) \n\n";
 
 	cout << "			  	   Please select an option from the menu below::\n" << endl << 
-	"1.  Create a new friend." << endl <<// (no. 1)
-	"2.  Create a fan page." << endl <<// (no. 2)
-	"3.  Add a status update to a friend." << endl <<// (no. 3)
-	"4.  Add a status update to a fan page." << endl <<// (no. 3)
-	"5.  Display all status updates of a friend." << endl <<// (no. 4)
-	"6.  Display all status updates of a fan page." << endl << // (no. 4)
-	"7.  Display the last 10 status updates of friends of a member." << endl << // (no. 5)
-	"8.  Establish a link between two friends." << endl << // (no. 6)
-	"9.  Cancel link between two friends." << endl << // (no. 7)
-	"10. Link a fan to a fan page." << endl << // (no. 8)
-	"11. Cancel link between a friend and a fan page." << endl << // (no. 9)
-	"12. Display all members (friends and fan pages)." << endl << // (no. 10)
-	"13. Display all friends of a specific friend." << endl << // (no. 11)
-	"14. Display all fans of a specific fan page." << endl << // (no. 11)
+	"1.  Create a new friend." << endl <<//											(no. 1)
+	"2.  Create a fan page." << endl <<//											(no. 2)
+	"3.  Add a status update to a friend." << endl <<//								(no. 3)
+	"4.  Add a status update to a fan page." << endl <<//							(no. 3)
+	"5.  Display all status updates of a friend." << endl <<//						(no. 4)
+	"6.  Display all status updates of a fan page." << endl << //					(no. 4)
+	"7.  Display the last 10 status updates of friends of a member." << endl << //	(no. 5)
+	"8.  Establish a link between two friends." << endl << //						(no. 6)
+	"9.  Cancel link between two friends." << endl << //							(no. 7)
+	"10. Link a fan to a fan page." << endl << //									(no. 8)
+	"11. Cancel link between a friend and a fan page." << endl << //				(no. 9)
+	"12. Display all members (friends and fan pages)." << endl << //				(no. 10)
+	"13. Display all friends of a specific friend." << endl << //					(no. 11)
+	"14. Display all fans of a specific fan page." << endl << //					(no. 11)
 	"15. Display all fan pages that a friend has joined." << endl <<
-	"16. Exit the program." << endl; // (no. 12)
+	"16. Exit the program." << endl; //												(no. 12)
 }
 
 void Method(Admin& admin, int choose) noexcept(false)
@@ -232,6 +186,7 @@ void Method(Admin& admin, int choose) noexcept(false)
 		string name_1;
 		string name_2;
 		int day, month, year;
+		showTitle(choose);
 		switch (choose)
 		{
 		case 1:
@@ -241,7 +196,6 @@ void Method(Admin& admin, int choose) noexcept(false)
 			getchar();
 			getline(cin, name_1);
 			cout << "Enter a date in format: DD MM YYYY (For example: 31 12 1998)" << endl;
-
 
 			cin >> day >> month >> year;
 			Date date_(day, month, year);
@@ -314,7 +268,6 @@ void Method(Admin& admin, int choose) noexcept(false)
 				throw "One of the name isn't exist. Try again.";
 
 			}
-			//else if ()
 			cout << "\nMembers are linked" << endl;
 			break;
 		}
@@ -401,7 +354,6 @@ void Method(Admin& admin, int choose) noexcept(false)
 			break;
 		}
 		case 16:
-
 			admin.exit();
 			break;
 		default:
@@ -412,5 +364,89 @@ void Method(Admin& admin, int choose) noexcept(false)
 	catch (const char* msg)
 	{
 		cout << msg << endl;
+	}
+}
+
+void showTitle(int methodNumber)
+{
+	switch (methodNumber)
+	{
+	case 1:
+	{
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|        Create a new user        |" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					-----------------------------------" << endl << endl;
+		break;
+	}
+	case 2: {
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|      Create a new fan page      |" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					-----------------------------------" << endl << endl;
+		break;
+	}
+	case 3: {
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|     Add a status to a friend    |" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					-----------------------------------" << endl << endl;
+		break;
+	}
+	case 4: {
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|    Add a status to a fan page   |" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					-----------------------------------" << endl << endl;
+		break;
+	}
+	case 8: {
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|       Link between friends      |" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					-----------------------------------" << endl << endl;
+		break;
+	}
+	case 9: {
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|   Cancel link between friends   |" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					-----------------------------------" << endl << endl;
+		break;
+	}
+	case 10: {
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|   Link a friend to a fan page   |" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					-----------------------------------" << endl << endl;
+		break;
+	}
+	case 11: {
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|     Cancel link  between a      |" << endl;
+		cout << "					|     friend and a fan page       |" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					-----------------------------------" << endl << endl;
+		break;
+	}
+	case 16:
+	{
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|   Data has saved - Bye bye      |" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					-----------------------------------" << endl << endl;
+		break;
+	}
+	default:
+		break;
 	}
 }
