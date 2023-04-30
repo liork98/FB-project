@@ -25,17 +25,17 @@ const string Friend::getName()
 
 bool Friend::isFriendIsLinked(Friend* friend_, int* index)
 {
-	bool res = false;
-	for (int i = 0; i < friendsArr.size() && res != true; i++) 
+
+	for (int i = 0; i < friendsArr.size(); i++) 
 	{
 		if (friendsArr[i] == friend_) 
 		{
 			*index = i;
-			res= true;
+			return true;
 		}		
 	}
 	*index = INVALID_INDEX;
-	return res;
+	return false;
 }
 
 bool Friend::isFriendIsAFan(Page* page_, int* index)
@@ -86,7 +86,7 @@ void Friend::printStatuses(int type, vector<Status*> statusesArr_) noexcept(fals
 	// If size is 0
 	if (size == ZERO && type!=SHOW_LAST_STATUSES_METHOD)
 	{
-		throw " ___________\n/           \\ \n|   ERROR   |\n\\___________/\n There are no statuses to print!";
+		throw "\n\n ERROR:  There are no statuses to print!";
 	}
 
 	else // size != 0
@@ -101,10 +101,6 @@ void Friend::printStatuses(int type, vector<Status*> statusesArr_) noexcept(fals
 
 			size = getMin(statusesArr_.size(), TEN);
 				
-				if (size == ZERO)
-				{
-					cout << " ___________\n/           \\ \n|   ERROR   |\n\\___________/\n There are no statuses to print!";
-				}
 				for (; statusitrEnd != statusitr; ++statusitr) // Running per a status
 				{
 					if (areFriends((*statusitr)->getAuthor()))
@@ -125,10 +121,12 @@ void Friend::printStatuses(int type, vector<Status*> statusesArr_) noexcept(fals
 					}
 					
 				}
+				if (count == 0)
+				{
+					cout << " \n\nERROR: There are no statuses to print!";
+				}
 				size--;
-				//size = getMin((*frienditr)->statusesArr.size(), TEN);
 				count = ZERO;
-			//}
 		}
 	
 		else // type ==5
@@ -173,6 +171,7 @@ void Friend::removeFriendFrom(Friend* friend_) noexcept(false) //Unlink between 
 	if (isFriendIsLinked(friend_, &index)) 
 	{
 		friendsArr.erase(friendsArr.begin() + index);
+		
 	}
 	else
 	{
@@ -197,15 +196,26 @@ void Friend::removePageFrom(Page* page_) noexcept(false) //unlink between friend
 
 void Friend::printFriendArr()
 {
-	cout << "Friends:\n" << endl;
-	int count = ZERO;
-	vector<Friend*>::iterator itr = friendsArr.begin();
-	vector<Friend*>::iterator itrEnd = friendsArr.end();
-	for (; itr != itrEnd; ++itr)
+	if (friendsArr.size() == 0)
 	{
-		cout << count << ". " << (*itr)->getName() << endl;
-		count++;
+		cout << endl << "					-----------------------------------" << endl;
+		cout << "					|                                 |" << endl;
+		cout << "					|      No friends to preview      |" << endl;
+		cout << "					|                                 |";
+		cout << endl << "					-----------------------------------" << endl;
 	}
+	else
+	{
+		cout << "\nFriends:\n" << endl;
+		int count = ZERO;
+		vector<Friend*>::iterator itr = friendsArr.begin();
+		vector<Friend*>::iterator itrEnd = friendsArr.end();
+		for (; itr != itrEnd; ++itr)
+		{
+			cout << ++count << ". " << (*itr)->getName() << endl;
+		}
+	}
+	
 
 }
 

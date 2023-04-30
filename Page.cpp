@@ -26,16 +26,24 @@ void Page::addNewStatus(Status* status)
 
 void Page::printStatuses()
 {
-	vector<Status*>::iterator itr = statusArr.begin();
-	vector<Status*>::iterator itrEnd = statusArr.end();
-	int i = 0;
-	for (; itr != itrEnd; ++itr)
+	if (statusArr.size() == 0)
 	{
-		cout << "Status number " << i << ": "<< endl;
-		(**itr).getStatus();
-		i++;
+		cout << "\nFriend list is empty." << endl;
+	}
+	else 
+	{
+		vector<Status*>::iterator itr = statusArr.begin();
+		vector<Status*>::iterator itrEnd = statusArr.end();
+		int i = 0;
+		for (; itr != itrEnd; ++itr)
+		{
+			cout << "Status number " << i << ": " << endl;
+			(**itr).getStatus();
+			i++;
+		}
 	}
 }
+
 
 void Page::printAllFriends()
 {
