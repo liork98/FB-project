@@ -44,7 +44,7 @@ void Admin::PrintRecentStatuses(Friend& friend_)
 
 bool Admin::isExist(const string& name, int typeArr, int* indexResult) 
 {
-	bool res = false;
+	//bool res = false;
 	int count = ZERO;
 	
 
@@ -52,12 +52,12 @@ bool Admin::isExist(const string& name, int typeArr, int* indexResult)
 	{
 		vector<Friend*>::iterator frienditr = friendsArr.begin();
 		vector<Friend*>::iterator frienditrEnd = friendsArr.end();
-		for (; frienditr != frienditrEnd && res != true; ++frienditr)
+		for (; frienditr != frienditrEnd; ++frienditr)
 		{
 			if (name== (*frienditr)->getName()) // if names are equal
 			{
 				*indexResult = count;
-				res= true;
+				return true;
 				
 			}
 			count++;
@@ -69,18 +69,18 @@ bool Admin::isExist(const string& name, int typeArr, int* indexResult)
 	{
 		vector<Page*>::iterator pageitr = pagesArr.begin();
 		vector<Page*>::iterator pageitrEnd = pagesArr.end();
-		for (; pageitr != pageitrEnd && res != true; ++pageitr)
+		for (; pageitr != pageitrEnd; ++pageitr)
 		{
 			if (name== (*pageitr)->getName()) // if names are equal
 			{
 				*indexResult = count;
-				res = true;
+				return true;
 			}
 			count++;
 		}
 	}
 
-	return res;
+	return false;
 }
 
 bool Admin::createAFriend(const string& name, Date& date) noexcept(false)
@@ -185,7 +185,6 @@ void Admin::createAStatus(int typeStatus, Date& statusDate, Time& statusTime, st
 		break;
 	}
 	}
-	//statusesArr.push_back(newStatus);
 }
 
 void Admin::addStatusToArr(int typeArr, int index, Status* status)
@@ -239,11 +238,19 @@ void Admin::printFriendsArr()
 		cout << count + 1 << ". " << (*itr)->getName() << endl;
 		count++;
 	}
+	if (count == 0)
+	{
+			cout << endl << "					-----------------------------------" << endl;
+			cout << "					|                                 |" << endl;
+			cout << "					|      No statuses to preview     |" << endl;
+			cout << "					|                                 |";
+			cout << endl << "					-----------------------------------" << endl;
+	}
 }
 
 void Admin::printPagesArr()
 {
-	cout << "Pages:\n" << endl;
+	cout << "\nPages:\n" << endl;
 	int count = ZERO;
 
 	vector<Page*>::iterator itr = pagesArr.begin();
@@ -265,51 +272,53 @@ void Admin::printAllStatus(int typeArr, int typeMethod, const string& name_2, Ad
 	int indexResult;
 	string name;
 	std::vector<Status*> statusesArr = admin->getStatusesArr();
-	if (typeMethod != SHOW_LAST_STATUSES_METHOD)
-	{
-		if (typeArr == TYPE_FRIEND) //Friends
+	
+		if (typeMethod != SHOW_LAST_STATUSES_METHOD)
 		{
-			cout << "Enter the name of a friend from the list:\n" << endl;
-			printFriendsArr();
-			
+			if (typeArr == TYPE_FRIEND) //Friends
+			{
+				cout << "Enter the name of a friend from the list:\n" << endl;
+				printFriendsArr();
+
+			}
+			else
+			{
+				cout << "Enter the name of a page from the list: \n" << endl;
+				printPagesArr();
+			}
+			getchar();
+			getline(cin, name);
+
+
+			if (isExist(name, typeArr, &indexResult))
+			{
+				if (typeArr == TYPE_FRIEND)
+				{
+					vector<Friend*>::iterator itr = friendsArr.begin();
+					(*(itr + indexResult))->printStatuses(typeMethod, statusesArr);
+				}
+				else
+				{
+					vector<Page*>::iterator itr = pagesArr.begin();
+					(*(itr + indexResult))->printStatuses();
+				}
+			}
+
 		}
-		else
+		else if (isExist(name_2, typeArr, &indexResult) && typeMethod == 7)
 		{
-			cout << "Enter the name of a page from the list: \n" << endl;
-			printPagesArr();
-		}
-		getchar();
-		getline(cin, name);
-		
-		
-		if (isExist(name, typeArr, &indexResult))
-		{
+
 			if (typeArr == TYPE_FRIEND)
 			{
 				vector<Friend*>::iterator itr = friendsArr.begin();
-				(*(itr + indexResult))->printStatuses(typeMethod, statusesArr);
+				(*(itr + indexResult))->printStatuses(typeMethod, admin->getStatusesArr());
 			}
 			else
 			{
 				vector<Page*>::iterator itr = pagesArr.begin();
 				(*(itr + indexResult))->printStatuses();
 			}
-		}
-
-	}
-	else if (isExist(name_2, typeArr, &indexResult) && typeMethod==7)
-	{
 		
-		if (typeArr == TYPE_FRIEND)
-		{
-			vector<Friend*>::iterator itr = friendsArr.begin();
-			(*(itr + indexResult))->printStatuses(typeMethod, admin->getStatusesArr());
-		}
-		else
-		{
-			vector<Page*>::iterator itr = pagesArr.begin();
-			(*(itr + indexResult))->printStatuses();
-		}
 	}
 }
 
@@ -352,6 +361,11 @@ bool Admin::UnlinkMembers(const string& name1, const string& name2, int type1, i
 		{
 			(*(frienditr + indexResult1))->removeFriendFrom(*(frienditr + indexResult2));
 			(*(frienditr + indexResult2))->removeFriendFrom(*(frienditr + indexResult1));
+			cout << endl << "					-----------------------------------" << endl;
+			cout << "					|                                 |" << endl;
+			cout << "					|      Members are unlinked       |" << endl;
+			cout << "					|                                 |" << endl;
+			cout << "					-----------------------------------" << endl << endl;
 		}
 		else if (type1 == TYPE_FRIEND && type2 == TYPE_PAGE)// Unlink fan from page
 		{

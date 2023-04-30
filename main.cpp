@@ -21,10 +21,11 @@ void getPageArr(bool* flag, ifstream& inFile, char delimeter1, char delimeter2, 
 void linkMembers(Admin& newAdmin, ifstream& inFile, char delimeter1, char delimeter2);
 void showWelcome();
 void showTitle(int methodNumber);
+void showFinishTitle(int methodeNumber);
 
 int main()
 {
-		// Creating local admin.
+		// Creating local admin
 		Admin admin;
 
 		ifstream inFile;
@@ -35,11 +36,12 @@ int main()
 		showWelcome();
 		while (choose != EXIT)
 		{
+
 			showMenu(admin);
 			cin >> choose;
 			Method(admin, choose);
 		}
-		inFile.close(); // Close file
+		inFile.close(); 
 	return 0;
 }
 
@@ -179,12 +181,63 @@ void showMenu(Admin& admin)
 	"16. Exit the program." << endl; //												(no. 12)
 }
 
+void showFinishTitle(int methodeNumber)
+{
+	cout << endl << "					-----------------------------------" << endl;
+	cout << "					|                                 |" << endl;
+	switch (methodeNumber)
+	{
+	case 1:
+	{
+		cout << "					|        Member was created       |" << endl;
+		break;
+	}
+	case 2:
+	{
+		cout << "					|      Fan page was created       |" << endl;
+		break;
+	}
+	case 3:
+	{
+		cout << "					|        Status was added         |" << endl;
+		break;
+	}
+	case 4:
+	{
+		cout << "					|        Status was added         |" << endl;
+		break;
+	}
+	case 8:
+	{
+		cout << "					|       Members are linked        |" << endl;
+		break;
+	}
+	case 10:
+	{
+		cout << "					|       Members are linked        |" << endl;
+		break;
+	}
+	case 11:
+	{
+		cout << "					|      Members are unlinked       |" << endl;
+		break;
+	}
+	default:
+	{
+		cout << "					|     Redirecting to menu...      |" << endl;
+		break;
+	}
+
+	}
+	cout << "					|                                 |" << endl;
+	cout << "					-----------------------------------" << endl << endl;
+}
+
 void Method(Admin& admin, int choose) noexcept(false)
 {
 	try
 	{
-		string name_1;
-		string name_2;
+		string name_1 ,name_2;
 		int day, month, year;
 		showTitle(choose);
 		switch (choose)
@@ -203,10 +256,7 @@ void Method(Admin& admin, int choose) noexcept(false)
 			{
 				throw "Name already exist. Try again. \nName: ";
 			}
-			cout << "  ________________________" << endl;
-			cout << " /                        \\" << endl;
-			cout << "|     Member was created   |" << endl;
-			cout << " \\________________________/" << endl;
+			
 
 			break;
 		}
@@ -219,7 +269,8 @@ void Method(Admin& admin, int choose) noexcept(false)
 			{
 				throw "Name already exist. Try again.";
 			}
-			cout << "\nMember was created" << endl;
+			
+			
 			break;
 
 		}
@@ -228,14 +279,14 @@ void Method(Admin& admin, int choose) noexcept(false)
 			{
 				throw "Name isn't exist.";
 			}
-			cout << "\nStatus was added" << endl;
+			
 			break;
 		case 4:
 			if (!(admin.addAStatus(TYPE_PAGE)))
 			{
 				throw "Name isn't exist.";
 			}
-			cout << "\nStatus was added" << endl;
+
 			break;
 		case 5:
 			admin.printAllStatus(TYPE_FRIEND, SHOW_STATUSES_METHOD, name_1, &admin);
@@ -246,7 +297,7 @@ void Method(Admin& admin, int choose) noexcept(false)
 		case 7:
 		{
 			admin.printFriendsArr();
-			cout << "\nName: " << endl;
+			cout << "\nEnter name: " << endl;
 			getchar();
 			getline(cin, name_1);
 			admin.printAllStatus(TYPE_FRIEND, SHOW_LAST_STATUSES_METHOD, name_1, &admin);
@@ -254,10 +305,11 @@ void Method(Admin& admin, int choose) noexcept(false)
 		}
 		case 8:
 		{
-			cout << "Name of the first friend: " << endl;
+			admin.printFriendsArr();
+			cout << "Enter name of the first friend: " << endl;
 			getchar();
 			getline(cin, name_1);
-			cout << "Name of the second friend: " << endl;
+			cout << "Enter name of the second friend: " << endl;
 			getline(cin, name_2);
 			if (name_1 == name_2)
 			{
@@ -265,54 +317,59 @@ void Method(Admin& admin, int choose) noexcept(false)
 			}
 			if (!(admin.LinkMembers(name_1, name_2, TYPE_FRIEND, TYPE_FRIEND)))
 			{
-				throw "One of the name isn't exist. Try again.";
+				throw "One of the name isn't exist. Try again. (Redirecting to menu...)";
 
 			}
-			cout << "\nMembers are linked" << endl;
+
 			break;
 		}
 		case 9:
 		{
-			cout << "Name of the first friend: " << endl;
+			admin.printFriendsArr();
+			cout << "Enter name of the first friend: " << endl;
 			getchar();
 			getline(cin, name_1);
-			cout << "Name of the second friend: " << endl;
-			getchar();
+			cout << "Enter name of the second friend: " << endl;
+			//getchar();
 			getline(cin, name_2);
 			if (!admin.UnlinkMembers(name_1, name_2, TYPE_FRIEND, TYPE_FRIEND))
 			{
-				throw "One of the name isn't exist. Try again.";
+				throw "One of the name isn't exist. Try again. (Redirecting to menu...)";
 			}
-			cout << "\nMembers are unlinked";
+
 			break;
 		}
 		case 10:
 		{
-			cout << "Name of friend: " << endl;
+			admin.printFriendsArr();
+			cout << "\nEnter name of a friend: " << endl;
 			getchar();
 			getline(cin, name_1);
-			cout << "\nName of page: " << endl;
+			admin.printPagesArr();
+			cout << "\nEnter name of a page: " << endl;
 			getline(cin, name_2);
 			if (!(admin.LinkMembers(name_1, name_2, TYPE_FRIEND, TYPE_PAGE)))
 			{
-				throw "One of the name isn't exist. Try again.";
+				throw "One of the name isn't exist. Try again. (Redirecting to menu...)";
 			}
-			cout << "\nMembers are linked";
+
 			break;
 		}
 
 		case 11:
 		{
-			cout << "Name of friend: ";
+			admin.printFriendsArr();
+			admin.printPagesArr();
+			cout << "Enter name of friend: ";
 			getchar();
 			getline(cin, name_1);
-			cout << "\nName of page: ";
+			cout << "\nEnter name of page: ";
 			getline(cin, name_2);
 			if (!(admin.UnlinkMembers(name_1, name_2, TYPE_FRIEND, TYPE_PAGE)))
 			{
-				throw "\nOne of the name isn't exist. Try again.";
+				throw "One of the name isn't exist. Try again. (Redirecting to menu...)";
 			}
-			cout << "\nMembers are unlinked" << endl;
+
 			break;
 
 		}
@@ -325,7 +382,7 @@ void Method(Admin& admin, int choose) noexcept(false)
 		}
 		case 13:
 		{
-			cout << "Name of friend: " << endl;
+			cout << "Enter name of friend: " << endl;
 			getchar();
 			getline(cin, name_1);
 			if (!(admin.printFriendsOfFriends(name_1, TYPE_FRIEND)))
@@ -336,7 +393,7 @@ void Method(Admin& admin, int choose) noexcept(false)
 		}
 		case 14:
 		{
-			cout << "Name of page: " << endl;
+			cout << "Enter name of page: " << endl;
 			getchar();
 			getline(cin, name_1);
 			if (!admin.printFriendsOfFriends(name_1, TYPE_PAGE))
@@ -347,7 +404,7 @@ void Method(Admin& admin, int choose) noexcept(false)
 		}
 		case 15:
 		{
-			cout << "Name of a friend: ";
+			cout << "Enter name of a friend: ";
 			getchar();
 			getline(cin, name_1);
 			admin.showAllPagesOfAFriend(name_1);
@@ -360,7 +417,10 @@ void Method(Admin& admin, int choose) noexcept(false)
 			cout << "This method isn't exist" << endl;
 			break;
 		}
+		showFinishTitle(choose);
 	}
+	
+
 	catch (const char* msg)
 	{
 		cout << msg << endl;
