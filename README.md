@@ -1,5 +1,5 @@
 <h1> Face-Book </h1>
-<h5> This program is written in C++ by: Lior Kashi, Tal Alayoff. <br></h5>
+<h5> This program is written in C++ by: Lior K, Tal A. <br></h5>
 
 "The Face-Book" is a web-based social network that provides a platform for registered members to interact with their friends online. 
 When a user signs up, they create a unique profile with their name and date of birth. This information is stored in a database.
